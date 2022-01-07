@@ -107,20 +107,9 @@ status_auto_restart_daemon() {
 }
 
 #------------------------Related to Klaytn node functions-----------------------------
-start_node() {
-    __pid_run
-    [ -n "$pid" ] && echo "kbnd already running...[$pid]" && return
-
-    if [ ! -f $KEY_PATH ]; then
-        echo
-        echo "  [ERROR] : KEY_PATH is not defined in $CONF/kbnd.conf"
-        exit 1
-    fi
-
-    echo -n "Starting kbnd: "
-
+__check_option() {
     if [ ! -d $LOG_DIR ]; then
-        mkdir -p $LOG_DIR
+            mkdir -p $LOG_DIR
     fi
 
     if [ ! -d $DATA_DIR ]; then
@@ -129,6 +118,7 @@ start_node() {
 
     set -f
     OPTIONS="--nodekey ${KEY_PATH}"
+
     if [[ ! -z $NETWORK_ID ]] && [[ $NETWORK_ID != "" ]]; then
         OPTIONS="$OPTIONS --networkid $NETWORK_ID"
     fi
@@ -152,11 +142,29 @@ start_node() {
     if [ ! -z $DATA_DIR ]; then
         OPTIONS="$OPTIONS --datadir $DATA_DIR"
     fi
+    set +f
+}
 
+start_node() {
+    __pid_run
+    [ -n "$pid" ] && echo "kbnd already running...[$pid]" && return
+
+    if [ ! -f $KEY_PATH ]; then
+        echo
+        echo "  [ERROR] : KEY_PATH is not defined in $CONF/kbnd.conf"
+        exit 1
+    fi
+
+    echo -n "Starting kbnd: "
+
+    __check_option
+
+    set -f
     $BIN/kbn ${OPTIONS} >> ${LOG_DIR}/kbnd.out 2>&1 &
     RETVAL=$?
     PIDNUM=$!
     set +f
+
     if [ $RETVAL = 0 ]; then
         echo $PIDNUM > ${pidfile}
         echo "OK"

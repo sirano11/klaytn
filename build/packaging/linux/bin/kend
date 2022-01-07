@@ -319,6 +319,12 @@ __check_option() {
     if [[ ! -z $KES_NODETYPE_SERVICE_ENABLE ]] && [[ $KES_NODETYPE_SERVICE_ENABLE -eq 1 ]]; then
         OPTIONS="$OPTIONS --kes.nodetype.service"
     fi
+
+    BASEDIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+    CURRENTFILE=`basename "$0"`
+    OPTIONS="$OPTIONS --autorestart.daemon.path $BASEDIR/$CURRENTFILE"
+
+    set +f
 }
 
 start_node() {
@@ -329,10 +335,7 @@ start_node() {
 
     __check_option
 
-    BASEDIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-    CURRENTFILE=`basename "$0"`
-    OPTIONS="$OPTIONS --autorestart.daemon.path $BASEDIR/$CURRENTFILE"
-
+    set -f
     $BIN/ken $OPTIONS >> ${LOG_DIR}/kend.out 2>&1 &
     RETVAL=$?
     PIDNUM=$!
