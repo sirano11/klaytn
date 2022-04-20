@@ -92,15 +92,17 @@ func (journal *txJournal) load(add func([]*types.Transaction) []error) error {
 		//
 		// 1.8.3 (P-6) loading point of journaled txs
 		//
-		logger.Info("-------- LOAD_JOURNAL logging start -------")
-		for _, tx := range txs {
-			from, err := tx.From()
-			if err != nil {
-				logger.Info("(LOAD_JOURNAL Err calling tx.FROM()")
+		if len(txs) > 0 {
+			logger.Info("-------- LOAD_JOURNAL logging start -------")
+			for _, tx := range txs {
+				from, err := tx.From()
+				if err != nil {
+					logger.Info("(LOAD_JOURNAL Err calling tx.FROM()")
+				}
+				logger.Info("(LOAD_JOURNAL)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time())
 			}
-			logger.Info("(LOAD_JOURNAL)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time())
+			logger.Info("-------- LOAD_JOURNAL logging end -------")
 		}
-		logger.Info("-------- LOAD_JOURNAL logging end -------")
 	}
 	var (
 		failure error

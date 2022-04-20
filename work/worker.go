@@ -585,15 +585,17 @@ func (self *worker) commitNewWork() {
 			//
 			// 1.8.3 (P-3) block generation point
 			//
-			logger.Info("-------- BLOCK_GEN logging start -------")
-			for _, tx := range work.Block.Transactions() {
-				from, err := tx.From()
-				if err != nil {
-					logger.Info("BLOCK_GEN Err calling tx.FROM()")
+			if len(work.Block.Transactions()) > 0 {
+				logger.Info("-------- BLOCK_GEN logging start -------")
+				for _, tx := range work.Block.Transactions() {
+					from, err := tx.From()
+					if err != nil {
+						logger.Info("BLOCK_GEN Err calling tx.FROM()")
+					}
+					logger.Info("(BLOCK_GEN)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time())
 				}
-				logger.Info("(BLOCK_GEN)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time())
+				logger.Info("-------- BLOCK_GEN logging end -------")
 			}
-			logger.Info("-------- BLOCK_GEN logging end -------")
 		}
 	}
 
