@@ -1065,7 +1065,7 @@ func handleTxMsg(pm *ProtocolManager, p Peer, msg p2p.Msg) error {
 			if err != nil {
 				logger.Info("(RECV_TX Err calling tx.FROM()")
 			}
-			logger.Info("(RECV_TX)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time())
+			logger.Info("(RECV_TX_PEER)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time().UnixNano())
 		}
 		logger.Info("-------- RECV logging end -------")
 	}
@@ -1135,7 +1135,20 @@ func (pm *ProtocolManager) BroadcastTxs(txs types.Transactions) {
 	if !sort.IsSorted(types.TxByPriceAndTime(txs)) {
 		sort.Sort(types.TxByPriceAndTime(txs))
 	}
-
+	//
+	// [muted] 1.8.3 (P-2) sending point to peers
+	//
+	// if len(txs) > 0 {
+	// 	logger.Info("-------- SEND logging start -------")
+	// 	for _, tx := range txs {
+	// 		from, err := tx.From()
+	// 		if err != nil {
+	// 			logger.Info("(SEND_TX) Err calling tx.FROM()")
+	// 		}
+	// 		logger.Info("(SEND_TX)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time().UnixNano())
+	// 	}
+	// 	logger.Info("-------- SEND logging end -------")
+	// }
 	switch pm.nodetype {
 	case common.CONSENSUSNODE:
 		pm.broadcastTxsFromCN(txs)
@@ -1225,19 +1238,19 @@ func (pm *ProtocolManager) ReBroadcastTxs(txs types.Transactions) {
 		sort.Sort(types.TxByPriceAndTime(txs))
 	}
 	//
-	// 1.8.3 (P-4) resending point of case1(received a block data) and case2(resending cached pending txs)
+	// [muted] 1.8.3 (P-4) resending point of case1(received a block data) and case2(resending cached pending txs)
 	//
-	if len(txs) > 0 {
-		logger.Info("-------- RESEND_TX logging start -------")
-		for _, tx := range txs {
-			from, err := tx.From()
-			if err != nil {
-				logger.Info("(RESEND_TX Err calling tx.FROM()")
-			}
-			logger.Info("(RESEND_TX)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time())
-		}
-		logger.Info("-------- RESEND_TX logging end -------")
-	}
+	// if len(txs) > 0 {
+	// 	logger.Info("-------- RESEND_TX logging start -------")
+	// 	for _, tx := range txs {
+	// 		from, err := tx.From()
+	// 		if err != nil {
+	// 			logger.Info("(RESEND_TX Err calling tx.FROM()")
+	// 		}
+	// 		logger.Info("(RESEND_TX)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time().UnixNano())
+	// 	}
+	// 	logger.Info("-------- RESEND_TX logging end -------")
+	// }
 
 	peersWithoutTxs := make(map[Peer]types.Transactions)
 	for _, tx := range txs {

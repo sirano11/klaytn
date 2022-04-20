@@ -99,7 +99,7 @@ func (journal *txJournal) load(add func([]*types.Transaction) []error) error {
 				if err != nil {
 					logger.Info("(LOAD_JOURNAL Err calling tx.FROM()")
 				}
-				logger.Info("(LOAD_JOURNAL)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time())
+				logger.Info("(LOAD_JOURNAL)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time().UnixNano())
 			}
 			logger.Info("-------- LOAD_JOURNAL logging end -------")
 		}
@@ -175,7 +175,7 @@ func (journal *txJournal) rotate(all map[common.Address]types.Transactions, sign
 		if err != nil {
 			logger.Info("(SAVE_JOURNAL Err calling tx.FROM()")
 		}
-		logger.Info("(SAVE_JOURNAL)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time())
+		logger.Info("(SAVE_JOURNAL)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time().UnixNano())
 
 		journaled++
 		txSetByTime.Shift()

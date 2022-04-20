@@ -439,6 +439,18 @@ func (p *basePeer) SendTransactions(txs types.Transactions) error {
 
 	for _, tx := range txs {
 		p.AddToKnownTxs(tx.Hash())
+		//
+		// 1.8.3 (P-2-1) sending point when added a peer
+		//
+		logger.Info("-------- SEND_ADD_PEER logging start -------")
+		for _, tx := range txs {
+			from, err := tx.From()
+			if err != nil {
+				logger.Info("(SEND_TX_ADD_PEER) Err calling tx.FROM()")
+			}
+			logger.Info("(SEND_TX_ADD_PEER)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time().UnixNano())
+		}
+		logger.Info("-------- SEND_ADD_PEER logging end -------")
 	}
 	return p2p.Send(p.rw, TxMsg, txs)
 }

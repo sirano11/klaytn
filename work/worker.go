@@ -592,7 +592,7 @@ func (self *worker) commitNewWork() {
 					if err != nil {
 						logger.Info("BLOCK_GEN Err calling tx.FROM()")
 					}
-					logger.Info("(BLOCK_GEN)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time())
+					logger.Info("(BLOCK_GEN)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time().UnixNano())
 				}
 				logger.Info("-------- BLOCK_GEN logging end -------")
 			}
