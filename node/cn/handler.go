@@ -1325,7 +1325,9 @@ func (pm *ProtocolManager) txResendLoop(period uint64, maxTxCount int) {
 		select {
 		case <-resend.C:
 			pending := pm.txpool.CachedPendingTxsByCount(maxTxCount)
+			logger.Info("RESEND start by time tick")
 			pm.txResend(pending)
+			logger.Info("RESEND end by time tick")
 		case <-pm.quitResendCh:
 			logger.Debug("txResendloop stopped")
 			return
