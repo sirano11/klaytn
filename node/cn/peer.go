@@ -446,7 +446,7 @@ func (p *basePeer) SendTransactions(txs types.Transactions) error {
 		for _, tx := range txs {
 			from, err := tx.From()
 			if err != nil {
-				//logger.Info("(SEND_TX_ADD_PEER) Err calling tx.FROM()")
+				logger.Info("(SEND_TX_ADD_PEER) Err calling tx.FROM()")
 			}
 			logger.Info("(SEND_TX_ADD_PEER)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time().UnixNano())
 		}
@@ -470,9 +470,9 @@ func (p *basePeer) ReSendTransactions(txs types.Transactions) error {
 		for _, tx := range txs {
 			from, err := tx.From()
 			if err != nil {
-				// logger.Info("(RESEND_TX_ADD_PEER) Err calling tx.FROM()")
+				logger.Info("(RESEND_TX_ADD_PEER) Err calling tx.FROM()")
 			}
-			// logger.Info("(RESEND_TX_ADD_PEER)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time().UnixNano())
+			logger.Info("(RESEND_TX_ADD_PEER)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time().UnixNano())
 		}
 		logger.Info("-------- RESEND_ADD_PEER logging end (base) -------")
 	}
