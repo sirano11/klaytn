@@ -1187,7 +1187,7 @@ func (pool *TxPool) addTx(tx *types.Transaction, local bool) error {
 	if local {
 		from, err := tx.From()
 		if err != nil {
-			logger.Info("(RECV_TX Err calling tx.FROM()")
+			//logger.Info("(RECV_TX Err calling tx.FROM()")
 		}
 		logger.Info("(RECV_TX_LOCAL)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time().UnixNano())
 	}

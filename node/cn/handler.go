@@ -1063,7 +1063,7 @@ func handleTxMsg(pm *ProtocolManager, p Peer, msg p2p.Msg) error {
 		for _, tx := range validTxs {
 			from, err := tx.From()
 			if err != nil {
-				logger.Info("(RECV_TX Err calling tx.FROM()")
+				//logger.Info("(RECV_TX Err calling tx.FROM()")
 			}
 			logger.Info("(RECV_TX_PEER)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time().UnixNano())
 		}
@@ -1269,6 +1269,8 @@ func (pm *ProtocolManager) ReBroadcastTxs(txs types.Transactions) {
 // and sends the paired transactions to the peer in synchronised way.
 func sendTransactions(txsSet map[Peer]types.Transactions) {
 	for peer, txs := range txsSet {
+		// 1.8.3 logging peer id when resend
+		logger.Info("(SEND) to peer", "peer address", peer.GetAddr(), "peer id", peer.GetID())
 		if err := peer.SendTransactions(txs); err != nil {
 			logger.Error("Failed to send txs", "peer", peer.GetAddr(), "peerType", peer.ConnType(), "numTxs", len(txs), "err", err)
 		}

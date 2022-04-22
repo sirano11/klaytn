@@ -372,6 +372,7 @@ func (self *worker) wait(TxResendUseLegacy bool) {
 					}
 					if len(resendTxs) > 0 {
 						resentTxGauge.Update(int64(len(resendTxs)))
+						// 1.8.3 RESEND start and end
 						logger.Info("RESEND start when received a block")
 						self.backend.ReBroadcastTxs(resendTxs)
 						logger.Info("RESEND end when received a block")
@@ -592,7 +593,7 @@ func (self *worker) commitNewWork() {
 				for _, tx := range work.Block.Transactions() {
 					from, err := tx.From()
 					if err != nil {
-						logger.Info("BLOCK_GEN Err calling tx.FROM()")
+						//logger.Info("BLOCK_GEN Err calling tx.FROM()")
 					}
 					logger.Info("(BLOCK_GEN)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time().UnixNano())
 				}

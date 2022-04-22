@@ -97,7 +97,7 @@ func (journal *txJournal) load(add func([]*types.Transaction) []error) error {
 			for _, tx := range txs {
 				from, err := tx.From()
 				if err != nil {
-					logger.Info("(LOAD_JOURNAL Err calling tx.FROM()")
+					//logger.Info("(LOAD_JOURNAL Err calling tx.FROM()")
 				}
 				logger.Info("(LOAD_JOURNAL)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time().UnixNano())
 			}
@@ -173,7 +173,7 @@ func (journal *txJournal) rotate(all map[common.Address]types.Transactions, sign
 		//
 		from, err := tx.From()
 		if err != nil {
-			logger.Info("(SAVE_JOURNAL Err calling tx.FROM()")
+			//logger.Info("(SAVE_JOURNAL Err calling tx.FROM()")
 		}
 		logger.Info("(SAVE_JOURNAL)", "hash", tx.Hash(), "from", from, "to", tx.To(), "nonce", tx.Nonce(), "timestamp", tx.Time().UnixNano())
 
