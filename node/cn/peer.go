@@ -440,7 +440,7 @@ func (p *basePeer) SendTransactions(txs types.Transactions) error {
 	for _, tx := range txs {
 		p.AddToKnownTxs(tx.Hash())
 		//
-		// 1.8.3 (P-2-1) sending point when added a peer
+		// 1.8.3 (P-2-1) sending point when added a peer (base)
 		//
 		logger.Info("-------- SEND_ADD_PEER logging start (base) -------")
 		for _, tx := range txs {
@@ -464,7 +464,7 @@ func (p *basePeer) ReSendTransactions(txs types.Transactions) error {
 	for _, tx := range txs {
 		p.AddToKnownTxs(tx.Hash())
 		//
-		// 1.8.3 (P-2-2) resending point when added a peer
+		// 1.8.3 (P-2-2) resending point when added a peer (base)
 		//
 		logger.Info("-------- RESEND_ADD_PEER logging start (base) -------")
 		for _, tx := range txs {
@@ -869,7 +869,7 @@ func (p *multiChannelPeer) ReSendTransactions(txs types.Transactions) error {
 	for _, tx := range txs {
 		p.AddToKnownTxs(tx.Hash())
 		//
-		// 1.8.3 (P-2-4) sending point when added a peer
+		// 1.8.3 (P-2-4) resending point when added a peer (multi channel)
 		//
 		logger.Info("-------- RESEND_ADD_PEER logging start (multi) -------")
 		for _, tx := range txs {

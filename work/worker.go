@@ -372,7 +372,9 @@ func (self *worker) wait(TxResendUseLegacy bool) {
 					}
 					if len(resendTxs) > 0 {
 						resentTxGauge.Update(int64(len(resendTxs)))
+						logger.Info("RESEND start when received a block")
 						self.backend.ReBroadcastTxs(resendTxs)
+						logger.Info("RESEND end when received a block")
 					}
 				}
 				continue
